@@ -22,16 +22,24 @@ int32_t main() {
     while (t--) {
         int n; cin >> n;
         string s; cin >> s;
-        if (n > 2)
-            cout << "NO" nl;
-        else if (n == 2) {
-            if (s[0] == s[1])
-                cout << "NO" nl;
-            else
-                cout << "YES" nl;
+        string answ = "";
+
+        for (int i = n - 1; i >= 0; i--) {
+            if (s[i] == '0') {
+                i -= 2;
+                int num = s[i] - '0';
+                num *= 10;
+                num += s[i + 1] - '0';
+                answ += (char) (96 + num);
+            }
+            else {
+                int num = s[i] - '0';
+                answ += (char) (96 + num);
+            }
         }
-        else
-            cout << "YES" nl;
+
+        reverse(all(answ));
+        cout << answ nl;
     }
 
     return 0;

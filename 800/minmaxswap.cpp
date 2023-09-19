@@ -21,17 +21,21 @@ int32_t main() {
 
     while (t--) {
         int n; cin >> n;
-        string s; cin >> s;
-        if (n > 2)
-            cout << "NO" nl;
-        else if (n == 2) {
-            if (s[0] == s[1])
-                cout << "NO" nl;
-            else
-                cout << "YES" nl;
-        }
-        else
-            cout << "YES" nl;
+
+        vi a(n);
+        vi b(n);
+
+        for (int i = 0; i < n; i++)
+            cin >> a[i];
+
+        for (int i = 0; i < n; i++)
+            cin >> b[i];
+        
+        for (int i = 0; i < n; i++)
+            if (a[i] > b[i])
+                swap(a[i], b[i]);
+        
+        cout << *max_element(all(b)) * *max_element(all(a)) nl;
     }
 
     return 0;
