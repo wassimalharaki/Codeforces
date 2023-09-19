@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define int long long
+#define all(v) v.begin(), v.end()
+#define nl << '\n'
+#define v vector
+#define vi vector<int>
+#define pii pair<int, int>
+#define mp make_pair
+#define INF LONG_LONG_MAX
+
+int32_t main() {
+    fast
+
+    int t; cin >> t;
+
+    while (t--) {
+        int n; cin >> n;
+        set<int> nums;
+        for (int i = 0; i < n; i++) {
+            int a; cin >> a;
+            nums.insert(a);
+        }
+
+        if (((n ^ nums.size()) & 1))
+            cout << nums.size() - 1 nl;
+        else
+            cout << nums.size() nl;
+    }
+
+    return 0;
+}
