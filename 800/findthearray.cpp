@@ -20,14 +20,20 @@ int32_t main() {
     int t; cin >> t;
     
     while (t--) {
-        int r, b, d; cin >> r >> b >> d;
+        int s; cin >> s;
+        int answ = 0;
+        int sum = 0;
+        for (int i = 1; true; i += 2)
+            if (sum + i < s) {
+                sum += i;
+                answ++;
+            }
+            else {
+                answ++;
+                break;
+            }
 
-        int packets = min(r, b);
-        int perpackets = (max(r, b) + packets - 1) / packets;
-        if (perpackets - 1 > d)
-            cout << "NO" nl;
-        else
-            cout << "YES" nl;
+        cout << answ nl;
     }
 
     return 0;

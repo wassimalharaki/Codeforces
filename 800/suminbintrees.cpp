@@ -18,16 +18,16 @@ int32_t main() {
     fast
 
     int t; cin >> t;
-    
-    while (t--) {
-        int r, b, d; cin >> r >> b >> d;
 
-        int packets = min(r, b);
-        int perpackets = (max(r, b) + packets - 1) / packets;
-        if (perpackets - 1 > d)
-            cout << "NO" nl;
-        else
-            cout << "YES" nl;
+    while (t--) {
+        int n; cin >> n;
+        int sum = 1;
+        while (n != 1) {
+            sum += n;
+            n /= 2;
+        }
+        
+        cout << sum nl;
     }
 
     return 0;
