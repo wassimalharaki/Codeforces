@@ -17,13 +17,14 @@ using namespace std;
 int32_t main() {
     fast
 
-    string s, t; cin >> s >> t;
-    reverse(all(t));
+    int n, sum; cin >> n;
 
-    if (s == t)
-        cout << "YES";
+    if (n & 1)
+        sum = - ( n + 1 ) / 2;
     else
-        cout << "NO";
+        sum = n / 2;
+    
+    cout << sum;
 
     return 0;
 }

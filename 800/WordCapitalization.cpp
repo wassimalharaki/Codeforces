@@ -17,13 +17,12 @@ using namespace std;
 int32_t main() {
     fast
 
-    string s, t; cin >> s >> t;
-    reverse(all(t));
+    string s;
+    cin >> s;
 
-    if (s == t)
-        cout << "YES";
-    else
-        cout << "NO";
+    s[0] = toupper(s[0]);
+
+    cout << s;
 
     return 0;
 }

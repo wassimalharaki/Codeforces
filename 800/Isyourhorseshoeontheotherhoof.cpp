@@ -8,17 +8,14 @@ int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    int n;
-    cin >> n;
-    loop(i, 0, n) {
-        int a;
-        cin >> a;
-        if (a == 1) {
-            cout << "HARD";
-            return 0;
-        }
+    set<int> shoes;
+    
+    for (int i = 0; i < 4; i++) {
+        int a; cin >> a;
+        shoes.insert(a);
     }
-    cout << "EASY";
+    
+    cout << 4 - shoes.size();
 
     return 0;
 }

@@ -17,10 +17,14 @@ using namespace std;
 int32_t main() {
     fast
 
-    string s, t; cin >> s >> t;
-    reverse(all(t));
+    string s; cin >> s;
+    int count = 0;
 
-    if (s == t)
+    for (int i = 0; i < s.size(); i++)
+        if (s[i] == '4' || s[i] == '7')
+            count++;
+    
+    if (count == 4 || count == 7)
         cout << "YES";
     else
         cout << "NO";

@@ -17,13 +17,16 @@ using namespace std;
 int32_t main() {
     fast
 
-    string s, t; cin >> s >> t;
-    reverse(all(t));
+    int n, h; cin >> n >> h;
+    int width = n;
 
-    if (s == t)
-        cout << "YES";
-    else
-        cout << "NO";
+    for (int i = 0; i < n; i++) {
+        int a; cin >> a;
+        if (a > h)
+            ++width;
+    }
+
+    cout << width;
 
     return 0;
 }

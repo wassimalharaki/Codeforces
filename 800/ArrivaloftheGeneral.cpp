@@ -18,17 +18,26 @@ int32_t main() {
     fast
 
     int n; cin >> n;
-    char prev = '2';
-    int groups = 1;
+
+    int max = 0, min = INF;
+    int iMax = -1, iMin = -1;
 
     for (int i = 0; i < n; i++) {
-        char a, b; cin >> a >> b;
-        if (a == prev)
-            groups++;
-        prev = b;
+        int h; cin >> h;
+        if (h > max) {
+            max = h;
+            iMax = i;
+        }
+        if (h <= min) {
+            min = h;
+            iMin = i;
+        }
     }
-
-    cout << groups;
+    
+    if (iMax > iMin)
+        cout << iMax + n - 2 - iMin;
+    else 
+        cout << iMax + n - 1 - iMin;
 
     return 0;
 }

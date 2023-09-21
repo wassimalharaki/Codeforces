@@ -17,13 +17,12 @@ using namespace std;
 int32_t main() {
     fast
 
-    string s, t; cin >> s >> t;
-    reverse(all(t));
+    int w; cin >> w;
 
-    if (s == t)
-        cout << "YES";
-    else
+    if (w == 2 || w & 1)
         cout << "NO";
+    else
+        cout << "YES";
 
     return 0;
 }

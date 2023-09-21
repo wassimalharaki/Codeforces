@@ -2,17 +2,23 @@
 
 using namespace std;
 
-#define loop(i, a, b) for (int i = a; i < b; i++)
+#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define int long long
+#define all(v) v.begin(), v.end()
+#define nl << '\n'
+#define v vector
+#define vi vector<int>
+#define pii pair<int, int>
+#define mp make_pair
+#define INF LONG_LONG_MAX
+#define F first
+#define S second
 
-int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+int32_t main() {
+    fast
 
-    int k, l, m, n, d;
-    cin >> k >> l >> m >> n >> d;
-    int dragons[d];
-    loop(i, 0, d)
-        dragons[i] = 1;
+    int k, l, m, n, d; cin >> k >> l >> m >> n >> d;
+    vi dragons(d, 1);
 
     for (int i = k; i <= d; i += k)
         dragons[i - 1] = 0;
@@ -27,7 +33,7 @@ int main() {
         dragons[i - 1] = 0;
 
     int dead = 0;
-    loop(i, 0, d)
+    for (int i = 0; i < d; i++)
         if (dragons[i] == 0)
             dead++;
     

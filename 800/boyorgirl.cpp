@@ -2,22 +2,35 @@
 
 using namespace std;
 
-#define loop(i, a, b) for (int i = a; i < b; i++)
+#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define int long long
+#define all(v) v.begin(), v.end()
+#define nl << '\n'
+#define v vector
+#define vi vector<int>
+#define pii pair<int, int>
+#define mp make_pair
+#define INF LONG_LONG_MAX
+#define F first
+#define S second
 
-int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+int32_t main() {
+    fast
 
-    string username;
-    string distinct;
-    cin >> username;
+    string s; cin >> s;
 
-    loop(i, 0, username.length()) {
-        char c = username[i];
-        if (((int) distinct.find(c)) == - 1)
-            distinct += c;
-    }
-    if (distinct.length() % 2 == 1)
+    vi letters(26, 0);
+
+    for (int i = 0; i < s.size(); i++)
+        letters[s[i] - 'a']++;
+
+    int count = 0;
+
+    for (int i = 0; i < 26; i++)
+        if (letters[i])
+            count++;
+
+    if (count & 1)
         cout << "IGNORE HIM!";
     else
         cout << "CHAT WITH HER!";

@@ -17,13 +17,14 @@ using namespace std;
 int32_t main() {
     fast
 
-    string s, t; cin >> s >> t;
-    reverse(all(t));
+    string s1, s2; cin >> s1 >> s2;
 
-    if (s == t)
-        cout << "YES";
-    else
-        cout << "NO";
+    for (int i = 0; i < s1.size(); i++) {
+        s1[i] = tolower(s1[i]);
+        s2[i] = tolower(s2[i]);
+    }
+
+    cout << s1.compare(s2);
 
     return 0;
 }

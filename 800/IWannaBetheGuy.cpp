@@ -17,13 +17,26 @@ using namespace std;
 int32_t main() {
     fast
 
-    string s, t; cin >> s >> t;
-    reverse(all(t));
+    int n, p; cin >> n >> p;
 
-    if (s == t)
-        cout << "YES";
+    vi lvls(n, 0);
+
+    for (int i = 0; i < p; i++) {
+        int l; cin >> l;
+        lvls[l - 1] = 1;
+    }
+
+    int q; cin >> q;
+
+    for (int i = 0; i < q; i++) {
+        int l; cin >> l;
+        lvls[l - 1] = 1;
+    }
+
+    if (*min_element(all(lvls)))
+        cout << "I become the guy.";
     else
-        cout << "NO";
+        cout << "Oh, my keyboard!";
 
     return 0;
 }

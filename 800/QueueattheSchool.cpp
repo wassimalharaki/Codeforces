@@ -17,13 +17,17 @@ using namespace std;
 int32_t main() {
     fast
 
-    string s, t; cin >> s >> t;
-    reverse(all(t));
+    int n, t; cin >> n >> t;
+    string s; cin >> s;
 
-    if (s == t)
-        cout << "YES";
-    else
-        cout << "NO";
+    for (int i = 0; i < t; i++)
+        for (int i = 0; i < n - 1; i++)
+            if (s[i] == 'B' && s[i + 1] == 'G') {
+                swap(s[i], s[i + 1]);
+                i++;
+            }
+
+    cout << s;
 
     return 0;
 }

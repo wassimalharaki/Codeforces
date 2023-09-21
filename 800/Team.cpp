@@ -17,13 +17,23 @@ using namespace std;
 int32_t main() {
     fast
 
-    string s, t; cin >> s >> t;
-    reverse(all(t));
+    int n; cin >> n;
+    int tot = 0;
 
-    if (s == t)
-        cout << "YES";
-    else
-        cout << "NO";
+    while (n--) {
+        int sure = 0;
+
+        for (int i = 0; i < 3; i++) {
+            int a; cin >> a;
+            if (a)
+                sure++;
+        }
+
+        if (sure >= 2)
+            tot++;
+    }
+
+    cout << tot;
 
     return 0;
 }

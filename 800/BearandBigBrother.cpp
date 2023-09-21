@@ -17,13 +17,9 @@ using namespace std;
 int32_t main() {
     fast
 
-    string s, t; cin >> s >> t;
-    reverse(all(t));
-
-    if (s == t)
-        cout << "YES";
-    else
-        cout << "NO";
+    int a, b;
+    cin >> a >> b;
+    cout << round(log((double) b / a) / log(1.5) + 0.51);
 
     return 0;
 }

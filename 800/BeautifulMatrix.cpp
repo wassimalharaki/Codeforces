@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0)
+#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
 #define int long long
 #define all(v) v.begin(), v.end()
 #define nl << '\n'
@@ -15,22 +15,19 @@ using namespace std;
 #define S second
 
 int32_t main() {
-    fast;
+    fast
 
-    int n, counter = 0; cin >> n;
-
-    vi home(n);
-    vi guest(n);
+    int n = 5;
+    int answ;
 
     for (int i = 0; i < n; i++)
-        cin >> home[i] >> guest[i];
+        for (int j = 0; j < n; j++) {
+            int a; cin >> a;
+            if (a == 1)
+                answ = abs(i - 2) + abs(j - 2);
+        }
 
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            if (home[i] == guest[j])
-                counter++;
-
-    cout << counter;
+    cout << answ;
 
     return 0;
 }

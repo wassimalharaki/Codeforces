@@ -17,13 +17,9 @@ using namespace std;
 int32_t main() {
     fast
 
-    string s, t; cin >> s >> t;
-    reverse(all(t));
+    int n, m; cin >> n >> m;
 
-    if (s == t)
-        cout << "YES";
-    else
-        cout << "NO";
+    cout << (n * m) / 2;
 
     return 0;
 }
