@@ -10,6 +10,7 @@ using namespace std;
 #define vi vector<int>
 #define pii pair<int, int>
 #define mp make_pair
+#define pb push_back
 #define INF LONG_LONG_MAX
 #define F first
 #define S second

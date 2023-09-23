@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0)
 #define int long long
 #define all(v) v.begin(), v.end()
 #define nl << '\n'
@@ -10,25 +10,21 @@ using namespace std;
 #define vi vector<int>
 #define pii pair<int, int>
 #define mp make_pair
+#define pb push_back
 #define INF LONG_LONG_MAX
+#define F first
+#define S second
 
 int32_t main() {
-    fast
+    fast;
 
-    int t;
+    int t; cin >> t;
 
-    cin >> t;
-
-    while(t--) {
+    while (t--) {
         int n; cin >> n;
-        int sum = pow(2, n + 1) - 2;
-        int half = sum;
-        half -= pow(2, n);
-        for (int i = 1; i < n / 2; i++) {
-            half -= pow(2, i);
-        }
-
-        cout << abs((sum - half) - half) nl;
+        int sum = (1 << (n + 1)) - 2;
+        int half = ((1 << (n / 2)) - 2) + (1 << n);
+        cout << abs(sum - 2 * half) nl;
     }
 
     return 0;

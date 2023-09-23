@@ -2,23 +2,26 @@
 
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0)
 #define int long long
 #define all(v) v.begin(), v.end()
 #define nl << '\n'
 #define v vector
 #define vi vector<int>
 #define pii pair<int, int>
+#define mp make_pair
+#define pb push_back
+#define INF LONG_LONG_MAX
+#define F first
+#define S second
 
 int32_t main() {
-    fast
+    fast;
 
-    int t;
-    cin >> t;
+    int t; cin >> t;
 
     vi tcs(t);
     int max = -1;
-
     for (int i = 0; i < t; i++) {
         cin >> tcs[i];
         if (tcs[i] > max)
@@ -27,18 +30,15 @@ int32_t main() {
 
     vi table(max);
     int s = 0;
-
-    for (int i = 1; true; i++) {
+    for (int i = 1;; i++)
         if (i % 10 != 3 && i % 3 != 0) {
             table[s++] = i;
             if (s == max)
                 break;
         }
-    }
 
-    for (int i = 0; i < t; i++) {
+    for (int i = 0; i < t; i++)
         cout << table[tcs[i] - 1] nl;
-    }
 
     return 0;
 }

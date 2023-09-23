@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0)
 #define int long long
 #define all(v) v.begin(), v.end()
 #define nl << '\n'
@@ -10,40 +10,30 @@ using namespace std;
 #define vi vector<int>
 #define pii pair<int, int>
 #define mp make_pair
+#define pb push_back
 #define INF LONG_LONG_MAX
+#define F first
+#define S second
 
 int32_t main() {
-    fast
+    fast;
 
     int t; cin >> t;
 
     while (t--) {
         int n; cin >> n;
 
-        int max = 0;
-        int current = 0;
-
-        vi nums(n);
-        
+        int max = 0, current = 0;
         for (int i = 0; i < n; i++) {
-            cin >> nums[i];
-        }
-
-        current = (nums[0] == 0);
-
-        for (int i = 1; i < n; i++) {
-            if (nums[i] == 0)
+            int a; cin >> a;
+            if (not a) {
                 current++;
-            else {
                 if (current > max)
                     max = current;
-                current = 0;
             }
+            else
+                current = 0;
         }
-
-        if (current > max)
-            max = current;
-
         cout << max nl;
     }
 

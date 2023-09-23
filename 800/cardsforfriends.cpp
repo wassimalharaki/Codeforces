@@ -2,7 +2,7 @@
 
 using namespace std;
 
-#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define fast ios_base::sync_with_stdio(0); cin.tie(0); cout.tie(0)
 #define int long long
 #define all(v) v.begin(), v.end()
 #define nl << '\n'
@@ -10,36 +10,30 @@ using namespace std;
 #define vi vector<int>
 #define pii pair<int, int>
 #define mp make_pair
+#define pb push_back
 #define INF LONG_LONG_MAX
+#define F first
+#define S second
 
 int32_t main() {
-    fast
+    fast;
 
-    int t;
-
-    cin >> t;
+    int t; cin >> t;
 
     while (t--) {
         int w, h, n; cin >> w >> h >> n;
-        int papers = 1;
+        int power = 0;
 
-        int mult = 1;
-        while (w % 2 != 1) {
+        while (not (w & 1)) {
+            power++;
             w /= 2;
-            papers += mult;
-            mult *= 2;
         }
-        
-        while (h % 2 != 1) {
+        while (not (h & 1)) {
+            power++;
             h /= 2;
-            papers += mult;
-            mult *= 2;
         }
 
-        if (papers >= n)
-            cout << "YES" nl;
-        else
-            cout << "NO" nl;
+        1 << power >= n ? cout << "YES" nl : cout << "NO" nl;
     }
 
     return 0;
