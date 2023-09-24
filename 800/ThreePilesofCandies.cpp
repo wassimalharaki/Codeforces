@@ -18,9 +18,16 @@ using namespace std;
 int32_t main() {
     fast;
 
-    vi d(3); cin >> d[0] >> d[1] >> d[2];
-    sort(all(d));
-    cout << min(d[0] + d[1] + d[2], 2 * (d[0] + d[1]));
+    int t; cin >> t;
+    
+    while (t--) {
+        vi candies(3);
+        cin >> candies[0] >> candies[1] >> candies[2];
+        sort(all(candies));
+
+        int split = min(candies[2], candies[1] - candies[0]);
+        cout << candies[0] + split + (candies[2] - split) / 2 nl;
+    }
 
     return 0;
 }

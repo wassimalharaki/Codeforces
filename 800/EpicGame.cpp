@@ -18,9 +18,20 @@ using namespace std;
 int32_t main() {
     fast;
 
-    vi d(3); cin >> d[0] >> d[1] >> d[2];
-    sort(all(d));
-    cout << min(d[0] + d[1] + d[2], 2 * (d[0] + d[1]));
+    int a, b, n; cin >> a >> b >> n;
+
+    while (true) {
+        n -= gcd(a, n);
+        if (not n) {
+            cout << 0;
+            break;
+        }
+        n -= gcd(b, n);
+        if (not n) {
+            cout << 1;
+            break;
+        }
+    }
 
     return 0;
 }

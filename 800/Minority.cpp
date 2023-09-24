@@ -18,9 +18,22 @@ using namespace std;
 int32_t main() {
     fast;
 
-    vi d(3); cin >> d[0] >> d[1] >> d[2];
-    sort(all(d));
-    cout << min(d[0] + d[1] + d[2], 2 * (d[0] + d[1]));
+    int t; cin >> t;
+    
+    while (t--) {
+        string s; cin >> s;
+        
+        int zeroes = 0, ones = 0;
+        for (int i = 0; i < s.size(); i++)
+            s[i] == '0' ? zeroes++ : ones++;
+        
+        if (not zeroes || not ones)
+            cout << 0 nl;
+        else if (zeroes == ones)
+            cout << zeroes - 1 nl;
+        else
+            cout << min(zeroes, ones) nl;
+    }
 
     return 0;
 }

@@ -18,9 +18,16 @@ using namespace std;
 int32_t main() {
     fast;
 
-    vi d(3); cin >> d[0] >> d[1] >> d[2];
-    sort(all(d));
-    cout << min(d[0] + d[1] + d[2], 2 * (d[0] + d[1]));
+    int t; cin >> t;
+    
+    while (t--) {
+        unordered_set<char> colors;
+        for (int i = 0; i < 4; i++) {
+            char c; cin >> c;
+            colors.insert(c);
+        }
+        cout << colors.size() - 1 nl;
+    }
 
     return 0;
 }

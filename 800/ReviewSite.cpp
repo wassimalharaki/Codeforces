@@ -18,9 +18,19 @@ using namespace std;
 int32_t main() {
     fast;
 
-    vi d(3); cin >> d[0] >> d[1] >> d[2];
-    sort(all(d));
-    cout << min(d[0] + d[1] + d[2], 2 * (d[0] + d[1]));
+    int t; cin >> t;
+    
+    while (t--) {
+        int n; cin >> n;
+
+        int count = 0;
+        for (int i = 0; i < n; i++) {
+            int a; cin >> a;
+            if (a != 2)
+                count++;
+        }
+        cout << count nl;
+    }
 
     return 0;
 }

@@ -18,9 +18,19 @@ using namespace std;
 int32_t main() {
     fast;
 
-    vi d(3); cin >> d[0] >> d[1] >> d[2];
-    sort(all(d));
-    cout << min(d[0] + d[1] + d[2], 2 * (d[0] + d[1]));
+    int t; cin >> t;
+    
+    while (t--) {
+        string s; cin >> s;
+
+        vi keys(3);
+        string answ = "YES";
+        if (s.find('R') < s.find('r')
+                || s.find('G') < s.find('g')
+                || s.find('B') < s.find('b'))
+            answ = "NO";
+        cout << answ nl;
+    }
 
     return 0;
 }
