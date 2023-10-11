@@ -18,20 +18,17 @@ using namespace std;
 int32_t main() {
     fast;
 
-    int t; cin >> t;
-    
-    while (t--) {
-        int n; cin >> n;
+    int n, b, d; cin >> n >> b >> d;
 
-        int even = 0;
-        for (int i = 0; i < n; i++) {
-            int a; cin >> a;
-            if (not (a & 1))
-                even++;
-        }
-
-        even ? cout << n nl : cout << 0 nl;
+    int w = 0, count = 0;
+    for (int i = 0; i < n; i++) {
+        int a; cin >> a;
+        if (a > b)
+            continue;
+        if ((w += a) > d)
+            w = 0, count++;
     }
+    cout << count;
 
     return 0;
 }
