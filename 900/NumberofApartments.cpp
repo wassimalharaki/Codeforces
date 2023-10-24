@@ -18,17 +18,24 @@ using namespace std;
 int32_t main() {
     fast;
 
-    int n; cin >> n;
+    int T; cin >> T;
 
-    int min = INF, imin;
-    for (int i = 0; i < n; i++) {
-        int a; cin >> a;
-        if (a < min)
-            min = a, imin = i + 1;
-        else if (a == min)
-            imin = -1;
+    while (T--) {
+        int n; cin >> n;
+
+        if (n < 5 and n != 3) {
+            cout << -1 nl;
+            continue;
+        }
+        
+        int mod = n % 3;
+        if (mod == 0)
+            cout << n / 3 << " 0 0" nl;
+        else if (mod == 1)
+            cout << n / 3 - 2 << " 0 1" nl;
+        else if (mod == 2)
+            cout << n / 3 - 1 << " 1 0" nl;
     }
-    imin == -1 ? cout << "Still Rozdil" : cout << imin;
 
     return 0;
 }

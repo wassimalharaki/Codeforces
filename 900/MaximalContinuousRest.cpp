@@ -20,15 +20,20 @@ int32_t main() {
 
     int n; cin >> n;
 
-    int min = INF, imin;
+    int start = 0, stop = 0;
+    int longest = 0, curr = 0;
     for (int i = 0; i < n; i++) {
         int a; cin >> a;
-        if (a < min)
-            min = a, imin = i + 1;
-        else if (a == min)
-            imin = -1;
+        if (a) {
+            if (not stop)
+                start++;
+            curr++;
+            longest = max(longest, curr);
+        }
+        else
+            curr = 0, stop = 1;
     }
-    imin == -1 ? cout << "Still Rozdil" : cout << imin;
-
+    cout << max(longest, curr + start);
+    
     return 0;
 }
