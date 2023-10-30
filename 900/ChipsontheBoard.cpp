@@ -23,14 +23,19 @@ int32_t main() {
     while (T--) {
         int n; cin >> n;
 
-        int prev = INF, worst = 1;
+        int rows = 0, cols = 0;
+        int mina = INF, minb = INF;
         for (int i = 0; i < n; i++) {
             int a; cin >> a;
-            if (a >= prev)
-                worst = 0;
-            prev = a;
+            rows += a;
+            mina = min(mina, a);
         }
-        worst ? cout << "NO" nl : cout << "YES" nl;
+        for (int i = 0; i < n; i++) {
+            int b; cin >> b;
+            cols += b;
+            minb = min(minb, b);
+        }
+        cout << min(rows + n * minb, cols + n * mina) nl;
     }
 
     return 0;

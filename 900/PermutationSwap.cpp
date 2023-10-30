@@ -22,15 +22,18 @@ int32_t main() {
     
     while (T--) {
         int n; cin >> n;
-
-        int prev = INF, worst = 1;
-        for (int i = 0; i < n; i++) {
+ 
+       vi k(n);
+        for (int i = 1; i <= n; i++) {
             int a; cin >> a;
-            if (a >= prev)
-                worst = 0;
-            prev = a;
+            k[i - 1] = abs(a - i);
         }
-        worst ? cout << "NO" nl : cout << "YES" nl;
+        sort(all(k));
+        
+        int answ = k[0];
+        for (int i = 1; i < n; i++)
+            answ = gcd(answ, k[i]);
+        cout << answ nl;
     }
 
     return 0;

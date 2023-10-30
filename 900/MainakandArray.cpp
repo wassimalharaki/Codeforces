@@ -23,14 +23,21 @@ int32_t main() {
     while (T--) {
         int n; cin >> n;
 
-        int prev = INF, worst = 1;
+        vi nums(n);
+        int min = INF;
+        int mx = 0;
         for (int i = 0; i < n; i++) {
-            int a; cin >> a;
-            if (a >= prev)
-                worst = 0;
-            prev = a;
+            cin >> nums[i];
+            if (i and nums[i] > mx)
+                mx = nums[i];
+            if (i != n - 1 and nums[i] < min)
+                min = nums[i];
         }
-        worst ? cout << "NO" nl : cout << "YES" nl;
+        int answ = max(max(nums[n - 1] - min, mx - nums[0]), nums[n - 1] - nums[0]);
+
+        for (int i = 0; i < n - 1; i++)
+            answ = max(answ, nums[i] - nums[i + 1]);
+        cout << answ nl;
     }
 
     return 0;

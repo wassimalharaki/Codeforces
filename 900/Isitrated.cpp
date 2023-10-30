@@ -18,20 +18,19 @@ using namespace std;
 int32_t main() {
     fast;
 
-    int T; cin >> T;
-    
-    while (T--) {
-        int n; cin >> n;
+    int n; cin >> n;
 
-        int prev = INF, worst = 1;
-        for (int i = 0; i < n; i++) {
-            int a; cin >> a;
-            if (a >= prev)
-                worst = 0;
-            prev = a;
-        }
-        worst ? cout << "NO" nl : cout << "YES" nl;
+    bool change = 0, order = 1;
+    int prev = INF;
+    for (int i = 0; i < n; i++) {
+        int a, b; cin >> a >> b;
+        if (a != b)
+            change = 1;
+        if (a > prev)
+            order = 0;
+        prev = a;
     }
+    change ? cout << "rated" : order ? cout << "maybe" : cout << "unrated";
 
     return 0;
 }

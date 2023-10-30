@@ -21,16 +21,21 @@ int32_t main() {
     int T; cin >> T;
     
     while (T--) {
-        int n; cin >> n;
+        int n, x; cin >> n >> x;
 
-        int prev = INF, worst = 1;
+        vi rank(201);
         for (int i = 0; i < n; i++) {
             int a; cin >> a;
-            if (a >= prev)
-                worst = 0;
-            prev = a;
+            rank[a] = 1;
         }
-        worst ? cout << "NO" nl : cout << "YES" nl;
+
+        int answ;
+        for (int i = 1; i < 201; i++) {
+            if (not rank[i])
+                if (x) x--; else break;
+            answ = i;
+        }
+        cout << answ nl;
     }
 
     return 0;

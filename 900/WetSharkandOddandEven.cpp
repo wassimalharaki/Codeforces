@@ -18,20 +18,19 @@ using namespace std;
 int32_t main() {
     fast;
 
-    int T; cin >> T;
-    
-    while (T--) {
-        int n; cin >> n;
+    int n; cin >> n;
 
-        int prev = INF, worst = 1;
-        for (int i = 0; i < n; i++) {
-            int a; cin >> a;
-            if (a >= prev)
-                worst = 0;
-            prev = a;
-        }
-        worst ? cout << "NO" nl : cout << "YES" nl;
+    int sum = 0, min = 0;
+    for (int i = 0; i < n; i++) {
+        int a; cin >> a;
+        if (a & 1)
+            if (a < min or min == 0)
+                swap(min, a);
+        sum += a;
     }
+    if (sum & 1)
+        sum += min;
+    cout << sum;
 
     return 0;
 }
