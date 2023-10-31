@@ -23,20 +23,19 @@ int32_t main() {
     while (T--) {
         int n; cin >> n;
 
-        vi nums(n);
-        for (int i = 0; i < n; i++)
-            cin >> nums[i];
-        
-        int cream = 0;
-        for (int i = n - 1; i >= 0; i--) {
-            cream = max(nums[i], cream);
-            if (cream > 0)
-                nums[i] = 1, cream--;
+        int count = 0, perfect = 1;
+        int prev; cin >> prev;
+        if (prev) count++, perfect = 0;
+        for (int i = 1; i < n; i++) {
+            int a; cin >> a;
+            if (a) {
+                perfect = 0;
+                if (prev == 0)
+                    count++;
+            }
+            prev = a;
         }
-
-        for (int i = 0; i < n; i++)
-            cout << nums[i] << " ";
-        cout nl;
+        cout << (perfect ? 0 : count == 1 ? 1 : 2) nl;
     }
 
     return 0;

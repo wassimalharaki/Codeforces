@@ -21,22 +21,15 @@ int32_t main() {
     int T; cin >> T;
     
     while (T--) {
-        int n; cin >> n;
-
-        vi nums(n);
-        for (int i = 0; i < n; i++)
-            cin >> nums[i];
-        
-        int cream = 0;
-        for (int i = n - 1; i >= 0; i--) {
-            cream = max(nums[i], cream);
-            if (cream > 0)
-                nums[i] = 1, cream--;
+        int n, k; cin >> n >> k;
+        int steps = 0;
+        while (n) {
+            steps += n % k;
+            n -= n % k;
+            if (n)
+                n /= k, steps++;
         }
-
-        for (int i = 0; i < n; i++)
-            cout << nums[i] << " ";
-        cout nl;
+        cout << steps nl;
     }
 
     return 0;

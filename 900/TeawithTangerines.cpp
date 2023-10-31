@@ -23,20 +23,16 @@ int32_t main() {
     while (T--) {
         int n; cin >> n;
 
+        int small = INF;
         vi nums(n);
         for (int i = 0; i < n; i++)
-            cin >> nums[i];
+            cin >> nums[i], small = min(small, nums[i]);
         
-        int cream = 0;
-        for (int i = n - 1; i >= 0; i--) {
-            cream = max(nums[i], cream);
-            if (cream > 0)
-                nums[i] = 1, cream--;
-        }
-
+        int cuts = 0;
         for (int i = 0; i < n; i++)
-            cout << nums[i] << " ";
-        cout nl;
+            if (nums[i] >= small * 2)
+                cuts += (nums[i] + 2 * small - 2) / (2 * small - 1) - 1;
+        cout << cuts nl;
     }
 
     return 0;
