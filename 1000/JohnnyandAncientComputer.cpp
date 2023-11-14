@@ -19,7 +19,38 @@ using namespace std;
 int32_t main() {
     fast;
 
+    int T; cin >> T;
     
+    while (T--) {
+        int a, b; cin >> a >> b;
+
+        if (a == b) {
+            cout << 0 nl;
+            continue;
+        }
+
+        if (a > b) {
+            int count = 0;
+            while (a > b) {
+                if (a & 1) break;
+                a /= 2;
+                count++;
+                if (a == b) break;
+            }
+            count = count / 3 + (count % 3) / 2 + (count % 3 == 1);
+            cout << (a == b ? count : -1) nl;
+        }
+        else {
+            int count = 0;
+            while (b > a) {
+                a *= 2;
+                count++;
+                if (a == b) break;
+            }
+            count = count / 3 + (count % 3) / 2 + (count % 3 == 1);
+            cout << (a == b ? count : -1) nl;
+        }
+    }
 
     return 0;
 }
