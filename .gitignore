@@ -2,3 +2,5 @@
 *.exe
 *.bin
 *.cph
+test.cpp
+input.txt
