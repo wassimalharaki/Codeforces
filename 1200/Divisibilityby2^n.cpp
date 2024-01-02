@@ -18,18 +18,33 @@ using vi = v<int>;
 using vvi = v<vi>;
 using vpii = v<pii>;
 
+vi prep(2 * 1e5);
+
 void solve() {
     int n; cin >> n;
 
-    vi nums(n);
+    int twos = 0;
+    for (int i = 0; i < n; i++) {
+        int a; cin >> a;
+        twos += __builtin_ctzll(a);
+    }
+
+    vi can(prep.begin(), prep.begin() + n);
+    sort(all(can), greater<int>());
+
+    int ops = 0;
     for (int i = 0; i < n; i++)
-        cin >> nums[i];
-    cout << (*min_element(all(nums)) == nums[0] ? "Bob" : "Alice") nl;
+        if (can[i] and twos + can[i] <= n)
+            twos += can[i], ops++;
+    cout << (twos >= n ? ops : -1) nl;
 }
 
 int32_t main() {
     ios_base::sync_with_stdio(0);
     cin.tie(0);
+
+    for (int i = 0; i < 2 * 1e5; i++)
+        prep[i] = __builtin_ctzll(i + 1);
 
     int T = 1;
     cin >> T;

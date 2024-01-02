@@ -20,11 +20,13 @@ using vpii = v<pii>;
 
 void solve() {
     int n; cin >> n;
+    string s; cin >> s;
 
-    vi nums(n);
-    for (int i = 0; i < n; i++)
-        cin >> nums[i];
-    cout << (*min_element(all(nums)) == nums[0] ? "Bob" : "Alice") nl;
+    int ones = 0, zeroes = 0;
+    for (int i = 0; i < n - 1; i++) 
+        if (s[i] == s[i + 1])
+            s[i] == '1' ? ones++ : zeroes++;
+    cout << max(ones, zeroes) nl;
 }
 
 int32_t main() {

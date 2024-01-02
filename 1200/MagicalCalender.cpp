@@ -19,12 +19,9 @@ using vvi = v<vi>;
 using vpii = v<pii>;
 
 void solve() {
-    int n; cin >> n;
-
-    vi nums(n);
-    for (int i = 0; i < n; i++)
-        cin >> nums[i];
-    cout << (*min_element(all(nums)) == nums[0] ? "Bob" : "Alice") nl;
+    int n, r; cin >> n >> r;
+    int ok = min(n - 1, r);
+    cout << ok * (ok + 1) / 2 + (min(n, r) == n) nl;
 }
 
 int32_t main() {

@@ -24,7 +24,14 @@ void solve() {
     vi nums(n);
     for (int i = 0; i < n; i++)
         cin >> nums[i];
-    cout << (*min_element(all(nums)) == nums[0] ? "Bob" : "Alice") nl;
+    sort(all(nums));
+
+    for (int i = 0; i < n; i++)
+        if (nums[i] != i + 1) {
+            cout << i + 1;
+            return;
+        }
+    cout << n + 1;
 }
 
 int32_t main() {
@@ -32,7 +39,7 @@ int32_t main() {
     cin.tie(0);
 
     int T = 1;
-    cin >> T;
+    // cin >> T;
     while (T--) solve();
 
     return 0;

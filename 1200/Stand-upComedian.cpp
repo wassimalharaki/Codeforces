@@ -19,12 +19,14 @@ using vvi = v<vi>;
 using vpii = v<pii>;
 
 void solve() {
-    int n; cin >> n;
+    int a, b, c, d;
+    cin >> a >> b >> c >> d;
+    if (c > b) swap(b, c);
 
-    vi nums(n);
-    for (int i = 0; i < n; i++)
-        cin >> nums[i];
-    cout << (*min_element(all(nums)) == nums[0] ? "Bob" : "Alice") nl;
+    if (a == 0)
+        cout << 1 nl;
+    else
+        cout << a + c * 2 + min(b - c + d, a + 1) nl;
 }
 
 int32_t main() {
