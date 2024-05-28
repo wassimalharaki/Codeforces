@@ -12,7 +12,9 @@
 * Solved first 150 1300-rated problems
 * Solved first 150 1400-rated problems
 * Solved first 150 1500-rated problems
-* Currently solving first 150 1600-rated problems
+* Solved first 150 1600-rated problems
+* Solved first 150 1700-rated problems
+* Currently solving first 150 1800-rated problems
 
 ## File naming:
 
