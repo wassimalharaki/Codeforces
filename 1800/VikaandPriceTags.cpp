@@ -12,7 +12,7 @@ using namespace std;
 
 int bf(int a, int b) {
     if (a == 0) return 0;
-    return a < b ? 1 + bf(b, b - a) : 1 + bf(b, a - b);
+    return 1 + bf(b, abs(a - b));
 }
 
 int get(int a, int b) {
