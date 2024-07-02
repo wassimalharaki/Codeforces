@@ -14,7 +14,8 @@
 * Solved first 150 1500-rated problems
 * Solved first 150 1600-rated problems
 * Solved first 150 1700-rated problems
-* Currently solving first 150 1800-rated problems
+* Solved first 150 1900-rated problems
+* Currently solving first 150 1900-rated problems
 
 ## File naming:
 
