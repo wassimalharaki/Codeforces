@@ -1,11 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
+// #define int long long
 #define nl '\n'
 #define v vector
 
 // O(N)
-const int N = 1e3 + 1;
+const int N = 1e7 + 1;
 vector<int> spf, primes;
 void build() {
     spf.resize(N);
@@ -25,42 +25,37 @@ void build() {
 // O(log(n))
 vector<int> prime_factors(int n) {
     if (primes.empty()) build();
+    if (n == 1) return {};
 
     vector<int> pfs;
     while (n != 1) {
-        pfs.push_back(spf[n]);
+        if (pfs.empty() or pfs.back() != spf[n])
+            pfs.push_back(spf[n]);
         n /= spf[n];
     }
 
     return pfs;
 }
 
-// O(log(b))
-int binpow(int a, int b) {
-    int res = 1;
-    while (b) {
-        if (b & 1)
-            res *= a;
-        a *= a;
-        b >>= 1;
-    }
-    return res;
-}
-
 void solve() {
     int n; cin >> n;
 
-    if (n == 8) {
-        cout << 24 << nl;
-        return;
+    v<array<int, 2>> a(n, {-1, -1});
+    for (int i = 0; i < n; i++) {
+        int x; cin >> x;
+        auto pfs = prime_factors(x);
+        if (pfs.size() == 1) continue;
+        int p = pfs[0], q = 1;
+        for (int& x : pfs) q *= x;
+        a[i] = {p, q / p};
     }
 
-    auto pfs = prime_factors(n);
-    reverse(pfs.begin(), pfs.end());
-    int ans = 1, j = 0;
-    for (int& x : pfs)
-        ans *= binpow(primes[j++], x - 1);
-    cout << ans << nl;
+    for (auto& x : a)
+        cout << x[0] << " ";
+    cout << nl;
+    for (auto& x : a)
+        cout << x[1] << " ";
+    cout << nl;
 }
 
 signed main() {
