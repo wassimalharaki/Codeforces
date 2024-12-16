@@ -1,31 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
+// #define int long long
 #define nl '\n'
 #define v vector
 
-using F = int;
 using S = int;
-
-int op(int a, int b) {
-    return a | b;
-}
-
-int e() {
-    return 0;
-}
-
-int mapping(int x, int a, int c) {
-    return x ? x : a;
-}
-
-int composition(int x, int y) {
-    return x ? x : y;
-}
-
-int id() {
-    return 0;
-}
+using F = int;
+int op(int a, int b) { return min(a, b); }
+int e() { return INT_MAX; }
+int mapping(int x, int a, int c) { return a + x; }
+int composition(int x, int y) { return x + y; }
+int id() { return 0; }
 
 // O(n), O(log(n))
 struct lazy_segtree {
@@ -37,7 +22,7 @@ struct lazy_segtree {
 
     lazy_segtree(const vector<S>& a) {
         n = a.size();
-        size = bit_ceil(n);
+        size = n <= 1 ? 1 : 1 << (1 + __lg(n - 1));
         log = __builtin_ctz(size);
         d.resize(size << 1, e());
         lz.resize(size, id());
@@ -58,12 +43,6 @@ struct lazy_segtree {
         all_apply(k << 1, lz[k]);
         all_apply((k << 1) + 1, lz[k]);
         lz[k] = id();
-    }
-
-    int bit_ceil(int _n) {
-        int x = 1;
-        while (x < n) x <<= 1;
-        return x;
     }
 
     void set(int p, S x) {
@@ -136,45 +115,36 @@ struct lazy_segtree {
     }
 };
 
+const int N = 1e6 + 1;
+
 void solve() {
     int n, m; cin >> n >> m;
+    m <<= 1, m--;
 
-    v<int> a(n);
-    for (int& x : a) cin >> x;
-
-    v<v<int>> adj(n);
-    for (int i = 0; i < n - 1; i++) {
-        int x, y; cin >> x >> y;
-        x--, y--;
-        adj[x].push_back(y);
-        adj[y].push_back(x);
+    v<array<int, 3>> a(n);
+    for (auto& [l, r, x] : a) {
+        cin >> l >> r >> x; l--;
+        l <<= 1, r <<= 1;
+        r = min(r - 1, m);
     }
+    sort(a.begin(), a.end(), [](auto l, auto& r) {
+        return l[2] < r[2];
+    });
 
-    int t = 0;
-    v<int> in(n), out(n), euler;
-    auto dfs = [&](int u, int p, auto&& dfs) -> void {
-        in[u] = t++;
-        euler.push_back(1ll << a[u]);
-        for (int& i : adj[u])
-            if (i != p)
-                dfs(i, u, dfs);
-        out[u] = t;
-    };
-    dfs(0, -1, dfs);
+    lazy_segtree seggy(m);
+    seggy.apply(0, m, -INT_MAX);
 
-    lazy_segtree seggy(euler);
-    while (m--) {
-        int o; cin >> o;
-        if (o == 1) {
-            int u, c; cin >> u >> c; u--;
-            seggy.apply(in[u], out[u], 1ll << c);
-        }
-        else {
-            int u; cin >> u; u--;
-            int x = seggy.prod(in[u], out[u]);
-            cout << __builtin_popcountll(x) << nl;
-        }
+    int i = 0, j = 0, ans = 1e9;
+    for (int l = 1; l < N; l++) {
+        for (; i < n and a[i][2] < l; i++)
+            if (i < j)
+                seggy.apply(a[i][0], a[i][1], -1);
+        for (j = max(i, j); j < n and !seggy.prod(0, m); j++)
+            seggy.apply(a[j][0], a[j][1], 1);
+        if (!seggy.prod(0, m)) break;
+        ans = min(ans, a[j - 1][2] - a[i][2]);
     }
+    cout << ans << nl;
 }
 
 signed main() {

@@ -4,28 +4,13 @@ using namespace std;
 #define nl '\n'
 #define v vector
 
-using F = int;
 using S = int;
-
-int op(int a, int b) {
-    return a | b;
-}
-
-int e() {
-    return 0;
-}
-
-int mapping(int x, int a, int c) {
-    return x ? x : a;
-}
-
-int composition(int x, int y) {
-    return x ? x : y;
-}
-
-int id() {
-    return 0;
-}
+int op(int a, int b) { return a + b; }
+int e() { return 0; }
+using F = int;
+int mapping(int x, int a, int c) { return a + x * c; }
+int composition(int x, int y) { return x + y; }
+int id() { return 0; }
 
 // O(n), O(log(n))
 struct lazy_segtree {
@@ -37,7 +22,7 @@ struct lazy_segtree {
 
     lazy_segtree(const vector<S>& a) {
         n = a.size();
-        size = bit_ceil(n);
+        size = n <= 1 ? 1 : 1 << (1 + __lg(n - 1));
         log = __builtin_ctz(size);
         d.resize(size << 1, e());
         lz.resize(size, id());
@@ -58,12 +43,6 @@ struct lazy_segtree {
         all_apply(k << 1, lz[k]);
         all_apply((k << 1) + 1, lz[k]);
         lz[k] = id();
-    }
-
-    int bit_ceil(int _n) {
-        int x = 1;
-        while (x < n) x <<= 1;
-        return x;
     }
 
     void set(int p, S x) {
@@ -136,45 +115,86 @@ struct lazy_segtree {
     }
 };
 
+bool isect(v<array<int, 2>>& a) {
+    sort(a.begin(), a.end());
+    int r = -1;
+    for (auto& [x, y] : a)
+        if (x <= r)
+            return 1;
+        else
+            r = y;
+    return 0;
+}
+
 void solve() {
-    int n, m; cin >> n >> m;
+    int n; cin >> n;
 
-    v<int> a(n);
-    for (int& x : a) cin >> x;
+    v<array<int, 2>> a(n), b(n);
+    int m;
+    {
 
-    v<v<int>> adj(n);
-    for (int i = 0; i < n - 1; i++) {
-        int x, y; cin >> x >> y;
-        x--, y--;
-        adj[x].push_back(y);
-        adj[y].push_back(x);
-    }
-
-    int t = 0;
-    v<int> in(n), out(n), euler;
-    auto dfs = [&](int u, int p, auto&& dfs) -> void {
-        in[u] = t++;
-        euler.push_back(1ll << a[u]);
-        for (int& i : adj[u])
-            if (i != p)
-                dfs(i, u, dfs);
-        out[u] = t;
-    };
-    dfs(0, -1, dfs);
-
-    lazy_segtree seggy(euler);
-    while (m--) {
-        int o; cin >> o;
-        if (o == 1) {
-            int u, c; cin >> u >> c; u--;
-            seggy.apply(in[u], out[u], 1ll << c);
+        v<int> c;
+        for (int i = 0; i < n; i++) {
+            cin >> a[i][0] >> a[i][1]
+                >> b[i][0] >> b[i][1];
+            c.insert(c.end(), {
+                a[i][0], a[i][1],
+                b[i][0], b[i][1]
+            });
         }
+        sort(c.begin(), c.end());
+        c.resize(unique(c.begin(), c.end()) - c.begin());
+
+        auto get = [&](int x) {
+            return lower_bound(c.begin(), c.end(), x) - c.begin();  
+        };
+
+        for (auto& [x, y] : a)
+            x = get(x), y = get(y);
+        for (auto& [x, y] : b)
+            x = get(x), y = get(y);
+        m = c.size();
+    }
+    bool ans = 0;
+
+    v<int> vis(n);
+    v<array<int, 3>> c(2 * n);
+    lazy_segtree seggy(m);
+
+    for (int i = 0; i < n; i++)
+        c[2 * i] = {a[i][0], -1, i},
+        c[2 * i + 1] = {a[i][1], 1, i};
+    sort(c.begin(), c.end());
+
+    for (auto& [x, _, i] : c)
+        if (vis[i])
+            seggy.apply(b[i][0], b[i][1] + 1, 1);
         else {
-            int u; cin >> u; u--;
-            int x = seggy.prod(in[u], out[u]);
-            cout << __builtin_popcountll(x) << nl;
+            vis[i] = 1;
+            ans |= seggy.prod(b[i][0], b[i][1] + 1);
         }
+    
+    for (int i = 0; i < m; i++)
+        seggy.set(i, 0);
+
+    for (int i = 0; i < n; i++)
+        swap(a[i], b[i]);
+    
+    for (int i = 0; i < n; i++) {
+        c[2 * i] = {a[i][0], -1, i};
+        c[2 * i + 1] = {a[i][1], 1, i};
+        vis[i] = 0;
     }
+    sort(c.begin(), c.end());
+
+    for (auto& [x, _, i] : c)
+        if (vis[i])
+            seggy.apply(b[i][0], b[i][1] + 1, 1);
+        else {
+            vis[i] = 1;
+            ans |= seggy.prod(b[i][0], b[i][1] + 1);
+        }
+    cout << (ans ? "NO" : "YES") << nl;
 }
 
 signed main() {

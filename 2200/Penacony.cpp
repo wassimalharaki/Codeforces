@@ -1,33 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
+// #define int long long
 #define nl '\n'
 #define v vector
 
-using F = int;
-using S = int;
-
-int op(int a, int b) {
-    return a | b;
+using ai2 = array<int, 2>;
+ai2 op(ai2 a, ai2 b) {
+    if (a[0] < b[0]) return a;
+    if (b[0] < a[0]) return b;
+    return {a[0], a[1] + b[1]};
 }
-
-int e() {
-    return 0;
-}
-
-int mapping(int x, int a, int c) {
-    return x ? x : a;
-}
-
-int composition(int x, int y) {
-    return x ? x : y;
-}
-
-int id() {
-    return 0;
-}
+ai2 e() { return {0, 1}; }
+ai2 mpng(int x, ai2 a, int c) { return {a[0] + x, a[1]}; }
+int comp(int x, int y) { return x + y; }
+int id() { return 0; }
 
 // O(n), O(log(n))
+template <class S,
+          S (*op)(S, S),
+          S (*e)(),
+          class F,
+          S (*mapping)(F, S, int),
+          F (*composition)(F, F),
+          F (*id)()>
 struct lazy_segtree {
     int n, size, log;
     vector<S> d;
@@ -139,42 +134,33 @@ struct lazy_segtree {
 void solve() {
     int n, m; cin >> n >> m;
 
-    v<int> a(n);
-    for (int& x : a) cin >> x;
-
-    v<v<int>> adj(n);
-    for (int i = 0; i < n - 1; i++) {
-        int x, y; cin >> x >> y;
-        x--, y--;
-        adj[x].push_back(y);
-        adj[y].push_back(x);
+    v<array<int, 2>> edge(m);
+    v<v<int>> start(n), end(n);
+    lazy_segtree<ai2, op, e, int, mpng, comp, id> seggy(n);
+    for (int i = 0; i < m; i++) {
+        int a, b; cin >> a >> b;
+        a--, b--;
+        edge[i] = {a, b};
+        seggy.apply(a, b, 1);
+        start[a].push_back(i);
+        end[b].push_back(i);
     }
 
-    int t = 0;
-    v<int> in(n), out(n), euler;
-    auto dfs = [&](int u, int p, auto&& dfs) -> void {
-        in[u] = t++;
-        euler.push_back(1ll << a[u]);
-        for (int& i : adj[u])
-            if (i != p)
-                dfs(i, u, dfs);
-        out[u] = t;
-    };
-    dfs(0, -1, dfs);
-
-    lazy_segtree seggy(euler);
-    while (m--) {
-        int o; cin >> o;
-        if (o == 1) {
-            int u, c; cin >> u >> c; u--;
-            seggy.apply(in[u], out[u], 1ll << c);
+    int ans = n - seggy.prod(0, n)[1];
+    for (int i = 0; i < n; i++) {
+        for (int& j : start[i]) {
+            seggy.apply(edge[j][0], edge[j][1], -1);
+            seggy.apply(0, edge[j][0], 1);
+            seggy.apply(edge[j][1], n, 1);
         }
-        else {
-            int u; cin >> u; u--;
-            int x = seggy.prod(in[u], out[u]);
-            cout << __builtin_popcountll(x) << nl;
+        for (int& j : end[i]) {
+            seggy.apply(edge[j][0], edge[j][1], 1);
+            seggy.apply(0, edge[j][0], -1);
+            seggy.apply(edge[j][1], n, -1);
         }
+        ans = min(ans, n - seggy.prod(0, n)[1]);
     }
+    cout << ans + 2 << nl;
 }
 
 signed main() {
@@ -182,6 +168,6 @@ signed main() {
     cin.tie(0);
 
     int T = 1;
-    // cin >> T;
+    cin >> T;
     while (T--) solve();
 }

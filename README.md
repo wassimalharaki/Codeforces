@@ -17,7 +17,8 @@
 * Solved 150 1800-rated problems
 * Solved 150 1900-rated problems
 * Solved 150 2000-rated problems
-* Currently solving 150 2100-rated problems
+* Solved 150 2100-rated problems
+* Currently solving 150 2200-rated problems
 
 ## File naming:
 

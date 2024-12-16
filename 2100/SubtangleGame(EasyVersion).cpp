@@ -11,25 +11,9 @@ void solve() {
     for (int& x : a) cin >> x;
 
     v<v<int>> b(n, v<int>(m));
-    array<v<v<int>>, 8> row, col;
-    for (int i = 0; i < 8; i++) {
-        row[i].resize(n);
-        col[i].resize(m);
-    }
-
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++) {
-            cin >> b[i][j];
-            row[b[i][j]][i].push_back(j);
-            col[b[i][j]][j].push_back(i);
-        }
-
-    for (int i = 0; i < 8; i++) {
-        for (int j = 0; j < n; j++)
-            sort(row[i][j].begin(), row[i][j].end());
-        for (int j = 0; j < m; j++)
-            sort(col[i][j].begin(), col[i][j].end());
-    }
+    for (auto& x : b)
+        for (auto& y : x)
+            cin >> y;
     
     v dp(n, v(m, v<char>(l)));
     for (int i = n - 1; i >= 0; i--)

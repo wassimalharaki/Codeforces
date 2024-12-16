@@ -1,31 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
+// #define int long long
 #define nl '\n'
 #define v vector
 
 using F = int;
 using S = int;
-
-int op(int a, int b) {
-    return a | b;
-}
-
-int e() {
-    return 0;
-}
-
-int mapping(int x, int a, int c) {
-    return x ? x : a;
-}
-
-int composition(int x, int y) {
-    return x ? x : y;
-}
-
-int id() {
-    return 0;
-}
+int op(int a, int b) { return a + b; }
+int e() { return 0; }
+int mapping(int x, int a, int c) { return a + x; }
+int composition(int x, int y) { return x + y; }
+int id() { return 0; }
 
 // O(n), O(log(n))
 struct lazy_segtree {
@@ -137,43 +122,28 @@ struct lazy_segtree {
 };
 
 void solve() {
-    int n, m; cin >> n >> m;
+    int n, q; cin >> n >> q;
 
+    lazy_segtree seggy(n + 1);
     v<int> a(n);
-    for (int& x : a) cin >> x;
+    for (int i = 0; i < n; i++) {
+        int x; cin >> x;
+        int lo = 1, hi = n, k = -1;
+        while (lo <= hi) {
+            int mid = (lo + hi) / 2;
 
-    v<v<int>> adj(n);
-    for (int i = 0; i < n - 1; i++) {
-        int x, y; cin >> x >> y;
-        x--, y--;
-        adj[x].push_back(y);
-        adj[y].push_back(x);
+            if (seggy.get(mid) / mid + 1 <= x)
+                k = mid, hi = mid - 1;
+            else
+                lo = mid + 1;
+        }
+        a[i] = k;
+        seggy.apply(k, n + 1, 1);
     }
 
-    int t = 0;
-    v<int> in(n), out(n), euler;
-    auto dfs = [&](int u, int p, auto&& dfs) -> void {
-        in[u] = t++;
-        euler.push_back(1ll << a[u]);
-        for (int& i : adj[u])
-            if (i != p)
-                dfs(i, u, dfs);
-        out[u] = t;
-    };
-    dfs(0, -1, dfs);
-
-    lazy_segtree seggy(euler);
-    while (m--) {
-        int o; cin >> o;
-        if (o == 1) {
-            int u, c; cin >> u >> c; u--;
-            seggy.apply(in[u], out[u], 1ll << c);
-        }
-        else {
-            int u; cin >> u; u--;
-            int x = seggy.prod(in[u], out[u]);
-            cout << __builtin_popcountll(x) << nl;
-        }
+    while (q--) {
+        int i, k; cin >> i >> k; i--;
+        cout << (k >= a[i] ? "YES" : "NO") << nl;
     }
 }
 

@@ -33,9 +33,6 @@ struct point {
     P rotate(double a) {
         return P(x * cosl(a) - y * sinl(a), x * sinl(a) + y * cosl(a));
     }
-    // friend ostream& operator<<(ostream& os, P p) {
-    //     return os << fixed << setprecision(20) << "(" << p.x << ", " << p.y << ")";
-    // }
 };
 using P = point<double>;
 
@@ -77,10 +74,6 @@ struct circle {
         return in;
     }
     double area() { return PI * r * r; }
-
-    // friend ostream& operator<<(ostream& os, circle c) {
-    //     return os << "(" << c.x << ", " << c.y << ", " << c.r << ")";
-    // }
 };
 
 double dist(array<int, 2> l, array<int, 2> r) {
@@ -100,7 +93,6 @@ double angle(P p1, P p2, P p3) {
     return (p3 - p1).angle() - (p2 - p1).angle();
 }
 
-// {minor, major}
 array<double, 2> circle_segments(circle& c, P& p1, P& p2) {
     double a = angle(P(c.x, c.y), p1, p2);
     while (a < 0) a += 2 * PI;

@@ -1,56 +1,65 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define int long long
+// #define int long long
 #define nl '\n'
 #define v vector
+#define all(v) v.begin(), v.end()
 
-using F = int;
-using S = int;
+#ifdef WASSIM
+#include "debug.h"
+#else
+#define dbg(...)
+#endif
 
 int op(int a, int b) {
-    return a | b;
-}
-
-int e() {
     return 0;
 }
 
-int mapping(int x, int a, int c) {
-    return x ? x : a;
+int e() {
+    return -1;
 }
 
-int composition(int x, int y) {
-    return x ? x : y;
+int mpng(int x, int a) {
+    return (a > 0 ? a + x : a);
+}
+
+int comp(int x, int y) {
+    return x + y;
 }
 
 int id() {
     return 0;
 }
 
-// O(n), O(log(n))
+// O(nlog(n)), O(log(n))
+template <class S,
+          S (*op)(S, S),
+          S (*e)(),
+          class F,
+          S (*mapping)(F, S),
+          F (*composition)(F, F),
+          F (*id)()>
 struct lazy_segtree {
     int n, size, log;
     vector<S> d;
     vector<F> lz;
 
-    lazy_segtree(int _n) : lazy_segtree(vector<S>(_n, e())) {}
+    lazy_segtree(int n) : lazy_segtree(vector<S>(n, e())) {}
 
-    lazy_segtree(const vector<S>& a) {
-        n = a.size();
+    lazy_segtree(const vector<S>& nums) {
+        n = nums.size();
         size = bit_ceil(n);
         log = __builtin_ctz(size);
-        d.resize(size << 1, e());
-        lz.resize(size, id());
-        for (int i = 0; i < n; i++) d[size + i] = a[i];
+        d = vector<S>(size << 1, e());
+        lz = vector<F>(size, id());
+        for (int i = 0; i < n; i++) d[size + i] = nums[i];
         for (int i = size - 1; i >= 1; i--) update(i);
     }
 
-    void update(int k) {
-        d[k] = op(d[k << 1], d[(k << 1) + 1]);
-    }
+    void update(int k) { d[k] = op(d[k << 1], d[(k << 1) + 1]); }
 
     void all_apply(int k, F f) {
-        d[k] = mapping(f, d[k], 1 << (log - __lg(k)));
+        d[k] = mapping(f, d[k]);
         if (k < size) lz[k] = composition(f, lz[k]);
     }
 
@@ -60,7 +69,7 @@ struct lazy_segtree {
         lz[k] = id();
     }
 
-    int bit_ceil(int _n) {
+    int bit_ceil(int n) {
         int x = 1;
         while (x < n) x <<= 1;
         return x;
@@ -81,7 +90,9 @@ struct lazy_segtree {
 
     S prod(int l, int r) {
         if (l == r) return e();
-        l += size, r += size;
+
+        l += size;
+        r += size;
 
         for (int i = log; i >= 1; i--) {
             if (((l >> i) << i) != l) push(l >> i);
@@ -104,13 +115,15 @@ struct lazy_segtree {
     void apply(int p, F f) {
         p += size;
         for (int i = log; i >= 1; i--) push(p >> i);
-        d[p] = mapping(f, d[p], 1);
+        d[p] = mapping(f, d[p]);
         for (int i = 1; i <= log; i++) update(p >> i);
     }
 
     void apply(int l, int r, F f) {
         if (l == r) return;
-        l += size, r += size;
+
+        l += size;
+        r += size;
 
         for (int i = log; i >= 1; i--) {
             if (((l >> i) << i) != l) push(l >> i);
@@ -137,49 +150,40 @@ struct lazy_segtree {
 };
 
 void solve() {
-    int n, m; cin >> n >> m;
+    int n, t; cin >> n >> t;
 
-    v<int> a(n);
-    for (int& x : a) cin >> x;
-
-    v<v<int>> adj(n);
-    for (int i = 0; i < n - 1; i++) {
-        int x, y; cin >> x >> y;
-        x--, y--;
-        adj[x].push_back(y);
-        adj[y].push_back(x);
-    }
-
-    int t = 0;
-    v<int> in(n), out(n), euler;
-    auto dfs = [&](int u, int p, auto&& dfs) -> void {
-        in[u] = t++;
-        euler.push_back(1ll << a[u]);
-        for (int& i : adj[u])
-            if (i != p)
-                dfs(i, u, dfs);
-        out[u] = t;
+    lazy_segtree<int, op, e, int, mpng, comp, id> seggy(n);
+    auto ask = [&](int r) {
+        if (seggy.get(r) >= 0)
+            return seggy.get(r);
+        cout << "? " << 1 << " " << r + 1 << endl;
+        int x; cin >> x;
+        x = r - x + 1;
+        seggy.set(r, x);
+        return x;
     };
-    dfs(0, -1, dfs);
 
-    lazy_segtree seggy(euler);
-    while (m--) {
-        int o; cin >> o;
-        if (o == 1) {
-            int u, c; cin >> u >> c; u--;
-            seggy.apply(in[u], out[u], 1ll << c);
+    while (t--) {
+        int k; cin >> k;
+
+        int lo = 0, hi = n - 1, ans;
+        while (lo <= hi) {
+            int mid = (lo + hi) / 2;
+            
+            if (ask(mid) >= k)
+                ans = mid, hi = mid - 1;
+            else
+                lo = mid + 1;
         }
-        else {
-            int u; cin >> u; u--;
-            int x = seggy.prod(in[u], out[u]);
-            cout << __builtin_popcountll(x) << nl;
-        }
+
+        seggy.apply(ans, n, -1);
+        cout << "! " << ans + 1 << endl;
     }
 }
 
 signed main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
+    // ios_base::sync_with_stdio(0);
+    // cin.tie(0);
 
     int T = 1;
     // cin >> T;

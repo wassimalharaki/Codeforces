@@ -4,28 +4,14 @@ using namespace std;
 #define nl '\n'
 #define v vector
 
-using F = int;
-using S = int;
-
-int op(int a, int b) {
-    return a | b;
-}
-
-int e() {
-    return 0;
-}
-
-int mapping(int x, int a, int c) {
-    return x ? x : a;
-}
-
-int composition(int x, int y) {
-    return x ? x : y;
-}
-
-int id() {
-    return 0;
-}
+using ai2 = array<int, 2>;
+using S = ai2;
+ai2 op(ai2 a, ai2 b) { return {min(a[0], b[0]), max(a[1], b[1])}; }
+ai2 e() { return {INT_MAX, INT_MIN}; }
+using F = ai2;
+ai2 mapping(ai2 x, ai2 a, int c) { return {a[0] + x[0], a[1] + x[1]}; }
+ai2 composition(ai2 x, ai2 y) { return {x[0] + y[0], x[1] + y[1]}; }
+ai2 id() { return {0, 0}; }
 
 // O(n), O(log(n))
 struct lazy_segtree {
@@ -37,7 +23,7 @@ struct lazy_segtree {
 
     lazy_segtree(const vector<S>& a) {
         n = a.size();
-        size = bit_ceil(n);
+        size = n <= 1 ? 1 : 1 << (1 + __lg(n - 1));
         log = __builtin_ctz(size);
         d.resize(size << 1, e());
         lz.resize(size, id());
@@ -58,12 +44,6 @@ struct lazy_segtree {
         all_apply(k << 1, lz[k]);
         all_apply((k << 1) + 1, lz[k]);
         lz[k] = id();
-    }
-
-    int bit_ceil(int _n) {
-        int x = 1;
-        while (x < n) x <<= 1;
-        return x;
     }
 
     void set(int p, S x) {
@@ -137,43 +117,83 @@ struct lazy_segtree {
 };
 
 void solve() {
-    int n, m; cin >> n >> m;
+    int n, q; cin >> n >> q;
+    string s; cin >> s;
 
-    v<int> a(n);
-    for (int& x : a) cin >> x;
-
-    v<v<int>> adj(n);
-    for (int i = 0; i < n - 1; i++) {
-        int x, y; cin >> x >> y;
-        x--, y--;
-        adj[x].push_back(y);
-        adj[y].push_back(x);
-    }
-
-    int t = 0;
-    v<int> in(n), out(n), euler;
-    auto dfs = [&](int u, int p, auto&& dfs) -> void {
-        in[u] = t++;
-        euler.push_back(1ll << a[u]);
-        for (int& i : adj[u])
-            if (i != p)
-                dfs(i, u, dfs);
-        out[u] = t;
+    set<int> oo, cc;
+    auto rem = [&](int i) {
+        if (i and s[i - 1] == s[i])
+            s[i] == ')' ? cc.erase(i - 1) : oo.erase(i - 1);
+        if (i + 1 < n and s[i] == s[i + 1])
+            s[i] == ')' ? cc.erase(i) : oo.erase(i);
     };
-    dfs(0, -1, dfs);
 
-    lazy_segtree seggy(euler);
-    while (m--) {
-        int o; cin >> o;
-        if (o == 1) {
-            int u, c; cin >> u >> c; u--;
-            seggy.apply(in[u], out[u], 1ll << c);
+    auto add = [&](int i) {
+        if (i and s[i - 1] == s[i])
+            s[i] == ')' ? cc.insert(i - 1) : oo.insert(i - 1);
+        if (i + 1 < n and s[i] == s[i + 1])
+            s[i] == ')' ? cc.insert(i) : oo.insert(i);
+    };
+
+    for (int i = 0; i < n; i++)
+        add(i);
+
+    v<ai2> d(n);
+    for (int i = 0; i < n; i++) {
+        d[i][0] = i ? d[i - 1][0] : 0;
+        d[i][0] += s[i] == ')' ? -1 : 1;
+    }
+    for (int i = n - 1; i >= 0; i--) {
+        d[i][1] = i + 1 < n ? d[i + 1][1] : 0;
+        d[i][1] += s[i] == ')' ? -1 : 1;
+    }
+    lazy_segtree seggy(d);
+
+    while (q--) {
+        int i; cin >> i; i--;
+        rem(i);
+        if (s[i] == ')') {
+            seggy.apply(i, n, {2, 0});
+            seggy.apply(0, i + 1, {0, 2});
+            s[i] = '(';
         }
         else {
-            int u; cin >> u; u--;
-            int x = seggy.prod(in[u], out[u]);
-            cout << __builtin_popcountll(x) << nl;
+            seggy.apply(i, n, {- 2, 0});
+            seggy.apply(0, i + 1, {0, - 2});
+            s[i] = ')';
         }
+        add(i);
+
+        bool ok = 1;
+        {
+            int lo = 0, hi = n - 1, lb = n;
+            while (lo <= hi) {
+                int mid = (lo + hi) / 2;
+
+                if (seggy.prod(0, mid + 1)[0] < 0)
+                    lb = mid, hi = mid - 1;
+                else
+                    lo = mid + 1;
+            }
+            if (lb != n and (oo.empty() or *oo.begin() > lb))
+                ok = 0;
+        }
+        {
+            int lo = 0, hi = n - 1, rb = -1;
+            while (lo <= hi) {
+                int mid = (lo + hi) / 2;
+
+                if (seggy.prod(mid, n)[1] > 0)
+                    rb = mid, lo = mid + 1;
+                else
+                    hi = mid - 1;
+            }
+            if (rb != -1 and (cc.empty() or *cc.rbegin() < rb))
+                ok = 0;
+        }
+
+        ok &= (abs(seggy.get(n - 1)[0]) & 1) ^ 1;
+        cout << (ok ? "YES" : "NO") << nl;
     }
 }
 
